@@ -5,14 +5,21 @@
 <script src="atom.js"></script>
 <script>
 
-let n    = 100; //nombre àtoms
-let radi = 20; //radi àtoms (píxels)
+let n    = 500; //nombre àtoms
+let radi = 10; //radi àtoms (píxels)
 
 let atoms=[];
 for(let i=0;i<n;i++){
   let a=new Atom(Math.random()*canvas.width, Math.random()*canvas.height, radi);
-  if(i%2){ a.carrega= 1;}
-  else{    a.carrega=-1;}
+
+  //a.carrega=1; //tots es repeleixen
+  if(i%3){
+    a.carrega=-1;
+  }else{
+    a.carrega=2;
+    a.radi=20;
+  }
+
   atoms.push(a);
 }
 
