@@ -6,12 +6,10 @@ class Atom{
     this.x=x;       //posició inicial
     this.y=y;       //posició inicial
     this.radi=radi; //radi
-
-    this.dx=0;       //velocitat inicial
-    this.dy=0;       //velocitat inicial
-    this.massa=10;
-
-    this.carrega=0;  //carrega elèctrica
+    this.dx=0;      //velocitat inicial
+    this.dy=0;      //velocitat inicial
+    this.massa=10;  //massa
+    this.carrega=0; //carrega elèctrica
   }
 
   get energia_cinetica(){
@@ -44,7 +42,12 @@ class Atom{
       f.normalitza();
 
       //la distància no pot ser 0
-      let d_efectiva = Math.max(this.radi, d);
+      let d_efectiva = null;
+      if(sentit<0){
+        d_efectiva = Math.max(this.radi, d);
+      }else{
+        d_efectiva = Math.max(1, d);
+      }
 
       //aplica força elèctrica
       f.producte_escalar(K*sentit/Math.pow(d_efectiva,2));
@@ -71,10 +74,10 @@ class Atom{
   }
 
   update_posicio(){
-    if(this.x<=this.radi){this.x=this.radi+1; this.dx*=-1*0.5}
-    if(this.y<=this.radi){this.y=this.radi+1; this.dy*=-1*0.5}
-    if(this.x+this.radi>=canvas.width ){this.x=canvas.width-this.radi-1;  this.dx*=-1*0.1}
-    if(this.y+this.radi>=canvas.height){this.y=canvas.height-this.radi-1; this.dy*=-1*0.1}
+    if(this.x<=this.radi){this.x=this.radi+1;                             this.dx*=-1*0.5}
+    if(this.y<=this.radi){this.y=this.radi+1;                             this.dy*=-1*0.5}
+    if(this.x+this.radi>=canvas.width ){this.x=canvas.width-this.radi-1;  this.dx*=-1*0.5}
+    if(this.y+this.radi>=canvas.height){this.y=canvas.height-this.radi-1; this.dy*=-1*0.5}
     this.x += this.dx;
     this.y += this.dy;
   }
@@ -84,7 +87,7 @@ class Atom{
     c.fillStyle=(function(carrega){
       if(carrega==0){return "black"}
       if(carrega<0 ){return "rgba(255,255,255,0.8)"}
-      if(carrega>0 ){return "rgba(  0,  0,255,0.8)" }
+      if(carrega>0 ){return "rgba(  0,  0,255,0.8)"}
     })(this.carrega);
     c.arc(this.x,this.y,this.radi,0,2*Math.PI);
     c.fill();
