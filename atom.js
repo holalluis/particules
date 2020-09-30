@@ -44,7 +44,7 @@ class Atom{
       f.normalitza();
 
       //la distància no pot ser 0
-      let d_efectiva = Math.max(2*this.radi, d);
+      let d_efectiva = Math.max(this.radi, d);
 
       //aplica força elèctrica
       f.producte_escalar(K*sentit/Math.pow(d_efectiva,2));
@@ -61,6 +61,7 @@ class Atom{
     this.dx += F.x/this.massa;
     this.dy += F.y/this.massa + g;
 
+    //limita la velocitat
     let v = new Vector(this.dx, this.dy);
     if(v.length>10){
       v.normalitza();
@@ -82,8 +83,8 @@ class Atom{
     c.beginPath();
     c.fillStyle=(function(carrega){
       if(carrega==0){return "black"}
-      if(carrega<0 ){return "rgba(0,0,0  ,0.8)"}
-      if(carrega>0 ){return "rgba(0,0,255,0.8)" }
+      if(carrega<0 ){return "rgba(255,255,255,0.8)"}
+      if(carrega>0 ){return "rgba(  0,  0,255,0.8)" }
     })(this.carrega);
     c.arc(this.x,this.y,this.radi,0,2*Math.PI);
     c.fill();
