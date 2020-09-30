@@ -1,0 +1,20 @@
+<canvas></canvas><style>body{margin:0;background:#666;}</style>
+<script src="utils.js"></script>
+<script src="canvas.js"></script>
+<script src="vector.js"></script>
+<script src="atom.js"></script>
+<script>
+
+let n    = 100; //nombre àtoms
+let radi = 20; //radi àtoms (píxels)
+
+let atoms=[];
+for(let i=0;i<n;i++){
+  let a=new Atom(Math.random()*canvas.width, Math.random()*canvas.height, radi);
+  if(i%2){ a.carrega= 1;}
+  else{    a.carrega=-1;}
+  atoms.push(a);
+}
+
+</script>
+<script src="animate.js"></script>
