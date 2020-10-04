@@ -5,20 +5,38 @@
 <script src="atom.js"></script>
 <script>
 
-let n    = 600; //nombre àtoms
-let radi =  10; //radi àtoms (píxels)
+let n    = Math.pow(12,2); //nombre àtoms
+let radi = 10; //radi àtoms (píxels)
 
-let atoms=[];
+//quadricula d'atoms
+let files = Math.floor(Math.sqrt(n));
+let separacio_x = canvas.width/files;
+let separacio_y = canvas.height/files;
+
 for(let i=0;i<n;i++){
-  let a=new Atom(Math.random()*canvas.width, Math.random()*canvas.height, radi);
-  //a.carrega=1; //tots es repeleixen
-  if(i%3){
-    a.carrega=-1;
+  let carrega=null;
+  let radi   =null;
+
+  //una tercera part oxigen i les altres dos hidrogen
+  if(i%3==1){
+    carrega=2;
+    radi=20;
   }else{
-    a.carrega=2;
-    a.radi=20;
+    carrega=-1;
+    radi=10;
   }
-  atoms.push(a);
+
+  //posicio del nou atom
+  let x = separacio_x/2 + (i%files)*separacio_x;
+  let y = separacio_y/2 + Math.floor(i/files)*separacio_y;
+
+  //crea nou àtom
+  new Atom(
+    x,       //posicio x
+    y,       //posicio y
+    radi,    //radi escollit
+    carrega, //càrrega escollida
+  );
 }
 
 </script>
