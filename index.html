@@ -1,43 +1,23 @@
-<canvas></canvas><style>body{margin:0;background:#666;}</style>
-<script src="utils.js"></script>
-<script src="canvas.js"></script>
-<script src="vector.js"></script>
+<!doctype html><html><head>
+  <meta charset=utf8>
+  <style>
+    body{
+      margin:0;
+      background:#666;
+    }
+    canvas{
+      display:block;
+    }
+  </style>
+</head><body><canvas></canvas></body></html>
+
+<!--carrega model-->
 <script src="atom.js"></script>
-<script>
+<script src="vector.js"></script>
+<script src="utils.js"></script>
 
-let n    = Math.pow(12,2); //nombre àtoms
-let radi = 10; //radi àtoms (píxels)
+<!--inicia renderitzat-->
+<script src="canvas.js"></script>
 
-//quadricula d'atoms
-let files = Math.floor(Math.sqrt(n));
-let separacio_x = canvas.width/files;
-let separacio_y = canvas.height/files;
-
-for(let i=0;i<n;i++){
-  let carrega=null;
-  let radi   =null;
-
-  //una tercera part oxigen i les altres dos hidrogen
-  if(i%3==1){
-    carrega=2;
-    radi=20;
-  }else{
-    carrega=-1;
-    radi=10;
-  }
-
-  //posicio del nou atom
-  let x = separacio_x/2 + (i%files)*separacio_x;
-  let y = separacio_y/2 + Math.floor(i/files)*separacio_y;
-
-  //crea nou àtom
-  new Atom(
-    x,       //posicio x
-    y,       //posicio y
-    radi,    //radi escollit
-    carrega, //càrrega escollida
-  );
-}
-
-</script>
-<script src="animate.js"></script>
+<!--inicia simulació-->
+<script src="app.js"></script>
