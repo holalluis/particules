@@ -22,7 +22,7 @@ for(let i=0;i<n;i++){
     carrega = +1;
     massa   = 23;
     radi    = 23;
-    simbol  = "K+";
+    simbol  = "Na+";
   }
 
   //ajust paràmetres simulació
