@@ -1,8 +1,5 @@
 //SIMULACIO
-const n = Math.pow(21,2); //nombre àtoms
-
-//paràmetres simulacio
-const ralentitzacio = 1e9;
+const n = Math.pow(18,2); //nombre àtoms
 
 //quadricula d'atoms
 const fic         = Math.floor(Math.sqrt(n)); //files i columnes
@@ -13,22 +10,25 @@ for(let i=0;i<n;i++){
   let carrega;
   let radi;
   let massa;
+  let simbol;
 
   //àtoms d'oxigen i hidrogen relacio 1:3
-  if(i%3==1){
-    carrega=-2;
-    radi=66;
-    massa=16;
+  if(i%2==1){
+    carrega = -1;
+    massa   = 35;
+    radi    = 35;
+    simbol  = "Cl-";
   }else{
-    carrega=1;
-    radi=31;
-    massa=1;
+    carrega = +1;
+    massa   = 23;
+    radi    = 23;
+    simbol  = "Na+";
   }
 
-  //ajusta paràmetres simulació
-  massa   *=1e9;
-  radi    /=4;
-  carrega *=2;
+  //ajust paràmetres simulació
+  massa   *=5e7;
+  radi    /=2;
+  carrega *=1;
 
   //posició nou àtom
   let x = separacio_x/2 + (i%fic)*separacio_x;
@@ -42,6 +42,7 @@ for(let i=0;i<n;i++){
     massa,   //massa escollida
     carrega, //càrrega escollida
   );
+  atom.simbol=simbol;
 
   atoms.push(atom);
 }

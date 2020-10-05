@@ -44,7 +44,7 @@ class Atom{
       //la distància no pot ser 0
       //sino la força seria infinita
       let radi_efectiu = Math.max(this.radi, a.radi);
-      let K_efectiva   = d < radi_efectiu ? 0:K;
+      let K_efectiva   = d < radi_efectiu ? 0 : K;
 
       //fórmula força elèctrica
       f.producte_escalar(K_efectiva*sentit/Math.pow(d,2));
@@ -96,6 +96,12 @@ class Atom{
     c.fillStyle=this.color;
     c.arc(this.x,this.y,this.radi,0,2*Math.PI);
     c.fill();
+
+    c.fillStyle="black";
+    c.font='bold 10px Arial';
+    let text=this.simbol;
+    let m = c.measureText(text);
+    c.fillText(text, this.x-m.width/2, this.y+10/2);
   }
 
   //calcula energia cinètica
