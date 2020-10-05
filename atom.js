@@ -1,7 +1,7 @@
 
 //constants natura
 const K = 9e9; //coulomb (9e9)
-const g = 0;   //gravetat
+const g = 0.01; //gravetat
 
 //tots els atoms
 let atoms=[];
@@ -60,13 +60,28 @@ class Atom{
 
     //update suma de forces
     this.fx = F.x;
-    this.fy = F.y;
+    this.fy = F.y + this.massa*g;
   }
 
   //modifica la velocitat de l'atom
   update_velocitat(){
     this.dx += this.fx/this.massa;
     this.dy += this.fy/this.massa;
+  }
+
+  update_colisions(){
+    atoms.filter(a=>a!=this).forEach(a=>{
+      let v = new Vector(this.x-a.x, this.y-a.y);
+      if(v.length < (this.radi+a.radi)){
+        let v = new Vector(this.dx,this.dy);
+        let u = new Vector(   a.dx,   a.dy);
+
+        this.dx = (v.x+u.x)*   a.massa/(this.massa+a.massa);
+        this.dy = (v.y+u.y)*   a.massa/(this.massa+a.massa);
+        a.dx    = (v.x+u.x)*this.massa/(this.massa+a.massa);
+        a.dy    = (v.y+u.y)*this.massa/(this.massa+a.massa);
+      }
+    });
   }
 
   //modifica la posició de l'àtom
@@ -86,6 +101,7 @@ class Atom{
   update(){
     this.update_forces();
     this.update_velocitat();
+    this.update_colisions();
     this.update_posicio();
     this.dibuixa();
   }

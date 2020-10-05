@@ -26,7 +26,7 @@ for(let i=0;i<n;i++){
   }
 
   //ajust paràmetres simulació
-  massa   *=5e7;
+  massa   *=1e6;
   radi    /=2;
   carrega *=1;
 

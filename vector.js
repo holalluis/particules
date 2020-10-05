@@ -16,4 +16,8 @@ class Vector{
     this.x *= escalar;
     this.y *= escalar;
   }
+
+  angle(vec){
+    return Math.acos((this.x*vec.x+this.y*vec.y)/(this.length*vec.length));
+  }
 }
