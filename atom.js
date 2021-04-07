@@ -1,57 +1,40 @@
-
-//constants natura
-const K = 9e9; //coulomb (9e9)
-const g = 0.01; //gravetat
-
-//tots els atoms
-let atoms=[];
-
 class Atom{
   constructor(x,y,radi,massa,carrega){
-    this.radi=radi;       //radi
-    this.massa=massa;     //massa
-    this.carrega=carrega; //carrega elèctrica
+    this.massa   = massa;   //massa
+    this.carrega = carrega; //carrega elèctrica
+    this.radi    = radi;    //radi
 
-    this.x=x;  //posició
-    this.y=y;  //posició
-    this.dx=0; //velocitat
-    this.dy=0; //velocitat
-    this.fx=0; //suma de forces rebudes
-    this.fy=0; //suma de forces rebudes
+    //variables
+    this.x  = x; //posició inicial     (x)
+    this.y  = y; //posició inicial     (y)
+    this.vx = 0; //velocitat inicial   (0)
+    this.vy = 0; //velocitat inicial   (0)
+    this.ax = 0; //acceleració inicial (0)
+    this.ay = 0; //acceleració inicial (0)
 
+    //color àtom
     this.color=(function(carrega){
       if(carrega==0){return "black"}
-      if(carrega>0 ){return "rgba(255,255,255,0.8)"}
-      if(carrega<0 ){return "rgba(  0,  0,255,0.8)"}
+      if(carrega<0 ){return "rgba(255,255,255,0.8)"}
+      if(carrega>0 ){return "rgba(  0,  0,255,0.8)"}
     })(this.carrega);
   }
 
-  //calcula forces rebudes des de tots els altres atoms
+  //calcula forces rebudes
+  //des de tots els altres atoms
   update_forces(){
-    let forces = atoms.filter(a=>a!=this).map(a=>{
-      //sentit de la força (positiu: repel·leix, negatiu: atrau)
-      let sentit = this.carrega * a.carrega;
+    let forces=[]; //array de vectors
 
-      //vector des de l'atom "a"
-      let f = new Vector(this.x-a.x, this.y-a.y);
-
-      //distància fins a l'àtom "a"
-      let d = f.length;
-
-      //normalitza el vector perquè sigui unitari
-      f.normalitza();
-
-      //la distància no pot ser 0
-      //sino la força seria infinita
-      let radi_efectiu = Math.max(this.radi, a.radi);
-      let K_efectiva   = d < radi_efectiu ? 0 : K;
-
-      //fórmula força elèctrica
-      f.producte_escalar(K_efectiva*sentit/Math.pow(d,2));
-
-      //afegeix la força a la suma de forces
-      return f;
+    //calcula forces elèctriques que fan els altres àtoms
+    let forces_electriques = atoms.map(a=>{
+      return this.força_electrica(a); //vector
     });
+
+    //afegeix forces electriques
+    forces = [...forces_electriques]; //array de vectors
+
+    //afegeix força gravetat
+    forces.push(this.força_gravetat()); //
 
     //força total = suma de forces
     let suma_x = forces.map(f=>f.x).sum();
@@ -59,49 +42,84 @@ class Atom{
     let F = new Vector(suma_x, suma_y);
 
     //update suma de forces
-    this.fx = F.x;
-    this.fy = F.y + this.massa*g;
+    this.ax = F.x/this.massa;
+    this.ay = F.y/this.massa;
   }
 
-  //modifica la velocitat de l'atom
-  update_velocitat(){
-    this.dx += this.fx/this.massa;
-    this.dy += this.fy/this.massa;
+  //calcula quina força fa la gravetat
+  força_gravetat(){ //->Vector
+    return new Vector(0,this.massa*g);
   }
 
-  update_colisions(){
-    atoms.filter(a=>a!=this).forEach(a=>{
-      let v = new Vector(this.x-a.x, this.y-a.y);
-      if(v.length < (this.radi+a.radi)){
-        let v = new Vector(this.dx,this.dy);
-        let u = new Vector(   a.dx,   a.dy);
+  //calcula quina força elèctrica li fa un altre àtom
+  força_electrica(atom){ //->Vector
+    //la força sobre un mateix és 0
+    if(atom==this) return new Vector(0,0);
 
-        this.dx = (v.x+u.x)*   a.massa/(this.massa+a.massa);
-        this.dy = (v.y+u.y)*   a.massa/(this.massa+a.massa);
-        a.dx    = (v.x+u.x)*this.massa/(this.massa+a.massa);
-        a.dy    = (v.y+u.y)*this.massa/(this.massa+a.massa);
+    //multiplicar càrregues
+    //sentit força (positiu: repel·leix, negatiu: atrau)
+    let q1q2 = atom.carrega * this.carrega; //numero
+
+    //vector this-->a
+    let vec = new Vector(this.x-atom.x, this.y-atom.y); //vector
+
+    //distància entre àtoms
+    let r = vec.length; //numero
+
+    //la distància mínima és la suma de radis en cas de càrregues diferents
+    let suma_radis = this.radi + atom.radi; //numero
+    if(r<suma_radis && q1q2<0) r = suma_radis; //numero
+
+    //normalitza el vector per fer-lo unitari (volem la direcció)
+    vec.normalitza();
+
+    //fórmula força elèctrica = K*q1*q2/r^2
+    vec.producte_escalar(K*q1q2/(r*r));
+
+    //retorna vector amb la força calculada
+    return vec;
+  }
+
+  //calcula velocitat àtom
+  //v(t) = v0 + a*t
+  update_velocitat(){ //->Void
+    this.vx = this.vx + this.ax;
+    this.vy = this.vy + this.ay;
+  }
+
+  //calcula posició àtom
+  //x(t) = x0 + v0*t + 1/2*a*t^2
+  //conserva la quantitat de moviment
+  update_posicio(){ //->Void
+    this.x += this.vx;
+    this.y += this.vy;
+
+    //col·lisió amb altres àtoms
+    atoms.forEach(a=>{
+      if(this==a) return;
+      let vec = new Vector(this.x-a.x, this.y-a.y);
+      if(vec.length < (this.radi+a.radi)){
+        let v = new Vector(this.vx,this.vy); //velocitat this
+        let u = new Vector(   a.vx,   a.vy); //velocitat a
+        let massa_total = this.massa + a.massa;
+
+        this.vx = (v.x+u.x)*a.massa/massa_total;
+        this.vy = (v.y+u.y)*a.massa/massa_total;
+
       }
     });
-  }
 
-  //modifica la posició de l'àtom
-  update_posicio(){
-    let width =canvas.width-1;
-    let height=canvas.height-1;
-    if(this.x<this.radi){       this.x=this.radi;        this.dx*=-1}
-    if(this.y<this.radi){       this.y=this.radi;        this.dy*=-1}
-    if(this.x+this.radi>width ){this.x=width-this.radi;  this.dx*=-1}
-    if(this.y+this.radi>height){this.y=height-this.radi; this.dy*=-1}
-
-    this.x += this.dx;
-    this.y += this.dy;
+    //col·lisió amb parets
+    if(this.x+this.radi>canvas.width){  this.vx = -Math.abs(this.vx); this.x=canvas.width-this.radi;  } //Xoc vs paret dreta
+    if(this.x<this.radi){               this.vx = +Math.abs(this.vx); this.x=this.radi;               } //Xoc vs paret esquerra
+    if(this.y+this.radi>canvas.height){ this.vy = -Math.abs(this.vy); this.y=canvas.height-this.radi; } //Xoc vs terra
+    if(this.y<this.radi){               this.vy = +Math.abs(this.vy); this.y=this.radi;               } //Xoc vs sostre
   }
 
   //update tot
-  update(){
+  update(){ //->Void
     this.update_forces();
     this.update_velocitat();
-    this.update_colisions();
     this.update_posicio();
     this.dibuixa();
   }
@@ -120,11 +138,27 @@ class Atom{
     c.fillText(text, this.x-m.width/2, this.y+10/2);
   }
 
-  //calcula energia cinètica
+  //calcula energia cinètica TODO
   get energia_cinetica(){
-    let dx = this.dx;
-    let dy = this.dy;
+    let V = new Vector(this.vx, this.vy); //vector velocitat
+    let v = V.length; //magnitud
+    let m = this.massa;
     //1/2*m*v^2
-    return 0.5*this.massa*(dx*dx + dy*dy);
+    return m*(v*v)/2;
+  }
+
+  //calcula energia potencial TODO
+  get energia_potencial(){
+    //energia potencial elèctrica que provoquen els altres àtoms
+    return atoms.map(a=>{
+      //magnitud força elèctrica
+      let F = this.força_electrica(a).length; //Newtons
+      //distància
+      let d = new Vector(this.x-a.x, this.y-a.y).length; //metres
+      return F*d; //Joules
+    }).sum();
   }
 }
+
+//array on viuen tots els àtoms
+let atoms=[];

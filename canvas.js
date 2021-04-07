@@ -1,14 +1,10 @@
 let canvas=document.querySelector('canvas');
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+canvas.width=window.innerWidth; //1280; //px
+canvas.height=window.innerHeight; //800; //px
 let c=canvas.getContext('2d');
 
-function calcula_energia_cinetica_mitjana(){
-  return atoms.map(a=>a.energia_cinetica).sum()/atoms.length;
-}
-
 //render loop
-let ticks=0;
+let ticks=0; //temps
 (function animate(){
   requestAnimationFrame(animate);
   ticks++;
@@ -17,6 +13,9 @@ let ticks=0;
   atoms.forEach(a=>a.update());
 
   if(ticks%200==0){
-    console.log(calcula_energia_cinetica_mitjana());
+    let energia_cinetica_total  = atoms.map(a=>a.energia_cinetica).sum();
+    let energia_potencial_total = atoms.map(a=>a.energia_potencial).sum();
+    let energia_total           = energia_cinetica_total + energia_potencial_total;
+    console.log({energia_total});
   }
 })();

@@ -1,7 +1,7 @@
 class Vector{
   constructor(x,y){
-    this.x=x;
-    this.y=y;
+    this.x=x||0;
+    this.y=y||0;
   }
   get length(){
     let x=this.x;
@@ -9,8 +9,9 @@ class Vector{
     return Math.sqrt(x*x + y*y);
   }
   normalitza(){
-    this.x /= this.length;
-    this.y /= this.length;
+    let length = this.length;
+    this.x /= length;
+    this.y /= length;
   }
   producte_escalar(escalar){
     this.x *= escalar;
