@@ -9,4 +9,4 @@ git commit -am 'update'
 # -P  mostra progrés
 # -vv incrementa verbositat
 # -r  actua recursivament
-rsync -h -P -vv -r . root@164.132.111.240:/var/www/html/atoms
+rsync --rsync-path="sudo rsync" -hPvvr . debian@51.91.250.220:/var/www/html/atoms

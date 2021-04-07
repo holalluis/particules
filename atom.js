@@ -8,16 +8,16 @@ let atoms=[];
 
 class Atom{
   constructor(x,y,radi,massa,carrega){
-    this.x=x;             //posició
-    this.y=y;             //posició
     this.radi=radi;       //radi
     this.massa=massa;     //massa
     this.carrega=carrega; //carrega elèctrica
 
-    this.fx=0; //suma de forces rebudes
-    this.fy=0; //suma de forces rebudes
+    this.x=x;  //posició
+    this.y=y;  //posició
     this.dx=0; //velocitat
     this.dy=0; //velocitat
+    this.fx=0; //suma de forces rebudes
+    this.fy=0; //suma de forces rebudes
 
     this.color=(function(carrega){
       if(carrega==0){return "black"}
