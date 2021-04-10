@@ -1,3 +1,6 @@
 
 1. Una càrrega puntual en moviment que genera un camp magnètic es veu afectat pel seu propi camp magnètic?
 2. Les col·lisions s'han de modelar? (xocs elàstics) o són repulsions entre càrregues del mateix signe?
+3. Comprovar que les partícules no tinguin velocitat superior a la de la llum
+4. Càrregues amb acceleració emeten radiació per tant perden energia
+5. Separar funció per dibuixar partícula fora de la classe Particula
