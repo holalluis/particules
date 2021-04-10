@@ -7,3 +7,6 @@
 
 llegir:
 "https://es.wikipedia.org/wiki/Potenciales_de_Li%C3%A9nard-Wiechert"
+https://www.fisicalab.com/apartado/potencial-electrico-punto
+https://ptable.com/?lang=ca#Propietats/S%C3%A8rieQu%C3%ADmica
+https://www.u-cursos.cl/usuario/42103e5ee2ce7442a3921d69b0200c93/mi_blog/r/Fisica_General_-_Fisica_Universitaria_Vol_2__ed_12%28Sears-Zemansky%29.pdf
