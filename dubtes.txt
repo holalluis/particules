@@ -4,3 +4,6 @@
 3. Comprovar que les partícules no tinguin velocitat superior a la de la llum
 4. Càrregues amb acceleració emeten radiació per tant perden energia
 5. Separar funció per dibuixar partícula fora de la classe Particula
+
+llegir:
+"https://es.wikipedia.org/wiki/Potenciales_de_Li%C3%A9nard-Wiechert"
