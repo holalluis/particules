@@ -1,69 +1,83 @@
 /*PARÀMETRES*/
+//Quantes partícules hi ha?
+let N = Math.pow(15,2); //nombre particules
 
-//Quants àtoms hi ha
-const N = Math.pow(15,2); //nombre àtoms
+/*constants matemàtiques*/
+const π = Math.PI;
 
-//Constants
-const K = 9e9; //constant de coulomb
-const g = 0.001; //constant de gravetat
+/*constants universals*/
+const c  = 299792458;      //velocitat de la llum (m/s)
+const h  = 6.62607015e-34; //constant de Planck (J·s)
+const k  = 1.380649e-23;   //constant de Boltzmann (J/K)
+const μ0 = 4*π*1e-7;       //permetivitat magnètica en el buit (T·m/A)
+const ε0 = 1/(c*c*μ0);     //permetivitat elèctrica en el buit ( C^2/(N·m^2) )
+const K  = 1/(4*π*ε0);     //constant de Coulomb (N·m^2/C^2)
 
-//Paràmetres
+const uma = 1.6605390666e-27; //unitat de massa atòmica, dalton (kg)
+const e   = 1.602176634e-19;  //càrrega elemental (C)
+const NA  = 6.02214076e23;    //número d'Avogadro (1/mol)
+
+//gravetat
+const g = 0.001; //gravetat (m/s^2)
+
+//mostra totes les constants
+console.log({constants:{π,c,μ0,ε0,h,e,k,NA,K,g}});
+
+//paràmetres simulació (ajustar per poder veure moviment)
+//es modificaran els valors de totes les partícules
 let modificadors={
-  massa:   6e6, //massa = "resistència al moviment"
-  radi:    1/10, //tamany
-  carrega: 1,   //càrrega = "força amb la que s'atrau o repelen altres càrregues"
+  massa:   1, //massa = "resistència al moviment"
+  radi:    3e16, //tamany (zoom arbritrari)
+  carrega: 1, //càrrega = "força amb la que s'atrau o repelen altres càrregues"
 };
 
-//quadricula d'atoms
+//ordena partícules en una quadrícula
 const files_columnes = Math.floor(Math.sqrt(N)); //files i columnes
 const separacio_x    = canvas.width/files_columnes;
 const separacio_y    = canvas.height/files_columnes;
 
-//omple array atoms
+//omple array partícules
 for(let i=0;i<N;i++){
-  let carrega;
-  let radi;
-  let massa;
-  let simbol;
-
-  //àtoms
-  if(i%2==1){
-    carrega = -1;
-    massa   = 35;
-    radi    = 175;
-    simbol  = "Cl-";
+  let carrega,radi,massa,simbol;
+  if(i%2){
+    //electrons
+    carrega = -1*e; //C
+    radi    = 1e-20; //m
+    massa   = 5.485799094e-4*uma; //kg
+    simbol  = "e-";
   }else{
-    carrega = +1;
-    massa   = 23;
-    radi    = 227;
-    simbol  = "Na+";
+    //protons
+    carrega = +1*e; //C
+    radi    = 8.41235641483227e-16; //m
+    massa   = 1.007276466812*uma; //kg
+    simbol  = "P+";
   }
 
-  //posició nou àtom
+  //posició partícula
   let x = separacio_x/2 + (i%files_columnes)*separacio_x;
   let y = separacio_y/2 + Math.floor(i/files_columnes)*separacio_y;
+  let z = 90 + 20*Math.random();
 
-  //crea nou àtom
-  let atom = new Atom(
-    x,       //posicio x
-    y,       //posicio y
+  //crea nova partícula
+  let par = new Particula(
+    x,       //posició x
+    y,       //posició y
+    z,       //posició z
     radi,    //radi escollit
     massa,   //massa escollida
     carrega, //càrrega escollida
   );
-  atom.simbol=simbol;
+  par.simbol=simbol;
 
-  atoms.push(atom);
+  particules.push(par);
 }
 
-//ajust paràmetres simulació
-atoms.forEach(a=>{
-  a.massa   *= modificadors.massa;   //daltons
-  a.radi    *= modificadors.radi;    //tamany àtoms
-  a.carrega *= modificadors.carrega; //càrrega d'un electró
+//ajusta paràmetres simulació
+particules.forEach(p=>{
+  p.massa   *= modificadors.massa;
+  p.radi    *= modificadors.radi;
+  p.carrega *= modificadors.carrega;
 });
 
 //ordena'ls per simbol perquè se solapin sempre igual
-atoms.sort((a,b)=>{
-  return b.simbol>a.simbol?1:-1
-});
+particules.sort((a,b)=>{return a.simbol>b.simbol?1:-1});

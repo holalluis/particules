@@ -1,0 +1,3 @@
+
+1. Una càrrega puntual en moviment que genera un camp magnètic es veu afectat pel seu propi camp magnètic?
+2. Les col·lisions s'han de modelar? (xocs elàstics) o són repulsions entre càrregues del mateix signe?
