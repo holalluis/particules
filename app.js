@@ -1,6 +1,7 @@
-/*PARÀMETRES*/
+/*PARÀMETRES ESCENA SIMULACIÓ*/
+
 //Quantes partícules hi ha?
-let N = Math.pow(15,2); //nombre particules
+let N = Math.pow(2,2); //N^2
 
 /*constants matemàtiques*/
 const π = Math.PI;
@@ -15,20 +16,19 @@ const K  = 1/(4*π*ε0);     //constant de Coulomb (N·m^2/C^2)
 
 const uma = 1.6605390666e-27; //unitat de massa atòmica, dalton (kg)
 const e   = 1.602176634e-19;  //càrrega elemental (C)
-const NA  = 6.02214076e23;    //número d'Avogadro (1/mol)
 
 //gravetat
-const g = 0.001; //gravetat (m/s^2)
+const g = 0.000; //gravetat (m/s^2)
 
 //mostra totes les constants
-console.log({constants:{π,c,μ0,ε0,h,e,k,NA,K,g}});
+console.log({constants:{π,c,μ0,ε0,h,e,k,K,g}});
 
 //paràmetres simulació (ajustar per poder veure moviment)
 //es modificaran els valors de totes les partícules
 let modificadors={
-  massa:   1, //massa = "resistència al moviment"
+  massa:   1,    //massa = "resistència al moviment"
   radi:    3e16, //tamany (zoom arbritrari)
-  carrega: 1, //càrrega = "força amb la que s'atrau o repelen altres càrregues"
+  carrega: 1,    //càrrega = "força amb la que s'atrau o repelen altres càrregues"
 };
 
 //ordena partícules en una quadrícula
@@ -39,36 +39,19 @@ const separacio_y    = canvas.height/files_columnes;
 //omple array partícules
 for(let i=0;i<N;i++){
   let carrega,radi,massa,simbol;
-  if(i%2){
-    //electrons
-    carrega = -1*e; //C
-    radi    = 1e-20; //m
-    massa   = 5.485799094e-4*uma; //kg
-    simbol  = "e-";
-  }else{
-    //protons
-    carrega = +1*e; //C
-    radi    = 8.41235641483227e-16; //m
-    massa   = 1.007276466812*uma; //kg
-    simbol  = "P+";
-  }
-
-  //posició partícula
+  //posició nova partícula
   let x = separacio_x/2 + (i%files_columnes)*separacio_x;
   let y = separacio_y/2 + Math.floor(i/files_columnes)*separacio_y;
   let z = 90 + 20*Math.random();
 
-  //crea nova partícula
-  let par = new Particula(
-    x,       //posició x
-    y,       //posició y
-    z,       //posició z
-    radi,    //radi escollit
-    massa,   //massa escollida
-    carrega, //càrrega escollida
-  );
-  par.simbol=simbol;
-
+  let par = null;
+  if(i%2){
+    //crea un electró
+    par = new Electro(x,y,z);
+  }else{
+    //crea un protó
+    par = new Proto(x,y,z);
+  }
   particules.push(par);
 }
 

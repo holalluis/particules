@@ -7,19 +7,17 @@ class Particula{
     this.spin    = 0;          //spin TODO
 
     //magnituds vectorials
-    this.r = new Vector(x,y,z); //posició (metres)
-    this.v = new Vector(0,0,0); //velocitat (metres/segon)
-    this.a = new Vector(0,0,0); //acceleració (metres/segon/segon)
-    this.F = new Vector(0,0,0); //suma de forces rebudes
+    this.r = new Vector(x,y,z); //posició (m)
+    this.v = new Vector(0,0,0); //velocitat (m/s)
+    this.a = new Vector(0,0,0); //acceleració (m/s^2)
+    this.F = new Vector(0,0,0); //suma de forces rebudes (N)
 
-    //descripcio
-    this.simbol  = ""; //string
-
-    //color partícula
+    //propietats descriptives (no físiques)
+    this.simbol=""; //string
     this.color=(function(q){
       if(q==0){return "white"}
-      if(q<0 ){return "rgba(255, 0,   0, 0.8)"}
-      if(q>0 ){return "rgba(0,   0, 255, 0.8)"}
+      if(q<0 ){return "rgba(255,   0,   0, 0.8)"}
+      if(q>0 ){return "rgba(255, 255, 255, 0.8)"}
     })(this.carrega);
   }
 
@@ -50,11 +48,12 @@ class Particula{
   }
 
   //calcula acceleració partícula: a=F/m
+  //si la partícula no té massa, no té acceleració
   update_acceleracio(){
     let m = this.massa;
-    this.a.x = this.F.x/m;
-    this.a.y = this.F.y/m;
-    this.a.z = this.F.z/m;
+    this.a.x = this.F.x/m||0;
+    this.a.y = this.F.y/m||0;
+    this.a.z = this.F.z/m||0;
   }
 
   //calcula velocitat partícula
@@ -103,6 +102,15 @@ class Particula{
     this.update_colisions();
     this.dibuixa();
   }
+
+  //quantitat de moviment (vector)
+  //p = m·v
+  /*
+  get quantitat_de_moviment(){
+    let m = this.massa;
+    return this.v.multiplica(m);
+  }
+  */
 
   //calcula quina força elèctrica rep de la partícula P
   //F = q·E
@@ -153,12 +161,28 @@ class Particula{
     return B;
   }
 
-  //calcula energia cinètica
+  //energia cinètica
+  //E = (m·v^2)/2
   get energia_cinetica(){
-    let v = this.v.length; //velocitat
     let m = this.massa;
-    let Ec = m*(v*v)/2;
-    return Ec;
+    let v = this.v.length; //velocitat
+    return m*(v*v)/2;
+  }
+
+  //canvi energia cinètica => canvi velocitat
+  set energia_cinetica(nou_valor){
+    let Ec = nou_valor;
+    let m  = this.massa;
+
+    //valor inicial i final velocitat
+    let v0 = this.v.length;
+    let v1 = Math.sqrt(2*Ec/m);
+    let rao = v1/v0;
+
+    //modifica vector velocitat
+    this.v.x *= rao;
+    this.v.y *= rao;
+    this.v.z *= rao;
   }
 
   //energia potencial deguda a la resta de partícules
@@ -176,7 +200,24 @@ class Particula{
     return Ep;
   }
 
-  //dibuixa al canvas
+  //energia deguda a la massa
+  //E=m·c^2
+  /*
+  get energia_massa(){
+    let m = this.massa;
+    return m*c*c;
+  }
+  */
+
+  //longitud d'ona de l'ona associada al moviment de la partícula
+  /*
+  get longitud_ona(){
+    let m = this.massa;
+    return h/(m*c);
+  }
+  */
+
+  //dibuixa partícula al canvas
   dibuixa(){
     let x = this.r.x;
     let y = this.r.y;
@@ -195,11 +236,14 @@ class Particula{
     //text sobre la partícula
     ctx.font='bold 10px Arial';
     ctx.fillStyle="black";
-    let decimals = 0;
+
+    //símbol
     let text=`${this.simbol}`;
     let m = ctx.measureText(text);
     ctx.fillText(text, x-m.width/2, y-5);
 
+    //posició
+    let decimals = 0;
     text=`${x.toFixed(decimals)},${y.toFixed(decimals)},${z.toFixed(decimals)}`;
     m = ctx.measureText(text);
     ctx.fillText(text, x-m.width/2, y+5);
@@ -220,8 +264,7 @@ class Particula{
     ctx.stroke();
     */
   }
-
 }
 
-//array on viuen totes les partícules
+//array totes les partícules
 let particules=[];
