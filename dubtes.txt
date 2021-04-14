@@ -1,4 +1,3 @@
-
 1. Calcular camp elèctric induït
 4. Càrregues amb acceleració emeten radiació per tant perden energia... calcular.
 3. Comprovar que les partícules no tinguin velocitat superior a la de la llum
