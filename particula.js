@@ -23,7 +23,7 @@ class Particula{
 
   //calcula totes les forces rebudes
   //elèctriques, magnètiques i gravitatòria
-  update_forces(){
+  update_forces(){ //->Void
     //forces elèctriques rebudes de les altres partícules
     //cada altra càrrega t'empeny o t'estira
     let forces_electriques = particules.map(P=>{
@@ -39,21 +39,31 @@ class Particula{
     let gravetat = this.força_gravetat();
 
     //agrupa totes les forces
-    let forces = [...forces_electriques, ...forces_magnetiques, gravetat]; //array de vectors
+    let forces = [
+      ...forces_electriques,
+      ...forces_magnetiques,
+      gravetat,
+    ]; //array de vectors
 
-    //suma totes les forces
-    this.F.x = forces.map(f=>f.x).sum();
-    this.F.y = forces.map(f=>f.y).sum();
-    this.F.z = forces.map(f=>f.z).sum();
+    //suma totes les forces (suma tots els vectors)
+    let F = this.F;
+    F.x = forces.map(f=>f.x).sum();
+    F.y = forces.map(f=>f.y).sum();
+    F.z = forces.map(f=>f.z).sum();
   }
 
-  //calcula acceleració partícula: a=F/m
-  //si la partícula no té massa, no té acceleració
-  update_acceleracio(){
-    let m = this.massa;
-    this.a.x = this.F.x/m||0;
-    this.a.y = this.F.y/m||0;
-    this.a.z = this.F.z/m||0;
+  //calcula acceleració: a=F/m (vector)
+  /*
+    nota: si la partícula no té massa no tindrà acceleració, es mourà a la
+    velocitat de la llum
+  */
+  update_acceleracio(){ //->Void
+    let m = this.massa; //massa (kg)
+    let a = this.a; //acceleració (vector)
+    let F = this.F; //suma de forces (vector)
+    a.x = F.x/m||0;
+    a.y = F.y/m||0;
+    a.z = F.z/m||0;
   }
 
   //calcula velocitat partícula
@@ -77,7 +87,7 @@ class Particula{
   }
 
   //calcula xocs amb altres partícula o parets
-  update_colisions(){
+  update_colisions(){ //->Void
     //return
     let pos  = this.r;
     let vel  = this.v;
@@ -103,7 +113,7 @@ class Particula{
     this.dibuixa();
   }
 
-  //quantitat de moviment (vector)
+  //calcula quantitat de moviment "p" (vector)
   //p = m·v
   /*
   get quantitat_de_moviment(){
@@ -111,29 +121,6 @@ class Particula{
     return this.v.multiplica(m);
   }
   */
-
-  //calcula quina força elèctrica rep de la partícula P
-  //F = q·E
-  força_electrica(P){ //->Vector
-    let E = P.camp_electric(this.r); //camp elèctric que genera la partícula P sobre la posició (Vector)
-    let F = E.multiplica(this.carrega); //força (Vector)
-    return F;
-  }
-
-  //calcula quina força magnètica rep de la partícula P
-  //F = q·(v x B)
-  força_magnetica(P){ //->Vector
-    let vel = this.v;                  //velocitat (Vector)
-    let B   = P.camp_magnetic(this.r); //camp magnètic que genera la partícula P sobre la posició (Vector)
-    let F   = vel.producte_vectorial(B).multiplica(this.carrega); //força (Vector)
-    return F;
-  }
-
-  //calcula quina força rep de la gravetat
-  força_gravetat(){ //->Vector
-    //l'eix y a la pantalla va de dalt a baix, per tant g és positiu
-    return new Vector(0,this.massa*g,0);
-  }
 
   //calcula quin camp elèctric (E) genera la partícula a un punt P
   //E = K·q/r^2*u
@@ -146,6 +133,14 @@ class Particula{
     let uni = vec.normalitza(); //Vector
     let E   = uni.multiplica( K*q/(r*r) ); //Vector
     return E;
+  }
+
+  //calcula quina força elèctrica rep de la partícula P
+  //F = q·E
+  força_electrica(P){ //->Vector
+    let E = P.camp_electric(this.r); //camp elèctric que genera la partícula P sobre la posició (Vector)
+    let F = E.multiplica(this.carrega); //força (Vector)
+    return F;
   }
 
   //calcula quin camp magnètic (B) genera la partícula a un punt P
@@ -161,6 +156,21 @@ class Particula{
     return B;
   }
 
+  //calcula quina força magnètica rep de la partícula P
+  //F = q·(v x B)
+  força_magnetica(P){ //->Vector
+    let vel = this.v; //velocitat (vector)
+    let B   = P.camp_magnetic(this.r); //camp magnètic que genera la partícula P sobre la posició (Vector)
+    let F   = vel.producte_vectorial(B).multiplica(this.carrega); //força (Vector)
+    return F;
+  }
+
+  //calcula quina força rep de la gravetat
+  força_gravetat(){ //->Vector
+    //l'eix y a la pantalla va de dalt a baix, per tant g és positiu
+    return new Vector(0,this.massa*g,0);
+  }
+
   //energia cinètica
   //E = (m·v^2)/2
   get energia_cinetica(){
@@ -171,18 +181,19 @@ class Particula{
 
   //canvi energia cinètica => canvi velocitat
   set energia_cinetica(nou_valor){
-    let Ec = nou_valor;
-    let m  = this.massa;
+    let Ec = nou_valor; //energia cinètica (J)
+    let m  = this.massa; //massa (kg)
 
-    //valor inicial i final velocitat
-    let v0 = this.v.length;
-    let v1 = Math.sqrt(2*Ec/m);
+    //velocitat inicial i final
+    let v0 = this.v.length; //magnitud
+    let v1 = Math.sqrt(2*Ec/m); //magnitud
     let rao = v1/v0;
 
     //modifica vector velocitat
-    this.v.x *= rao;
-    this.v.y *= rao;
-    this.v.z *= rao;
+    let vel = this.v;
+    vel.x *= rao;
+    vel.y *= rao;
+    vel.z *= rao;
   }
 
   //energia potencial deguda a la resta de partícules

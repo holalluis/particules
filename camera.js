@@ -1,5 +1,4 @@
 //TODO
-
 class Matrius{
   //inverteix una matriu --> matriu
   static inverteix=function(A){
@@ -155,7 +154,7 @@ class Matrius{
 /*https://github.com/toji/gl-matrix/blob/master/src/mat4.js*/
 
 //Transpose a mat4
-export function transpose(A) {
+function transpose(A) {
   let R = new Array(16);
   R[0]  = A[0];
   R[1]  = A[4];
@@ -188,7 +187,7 @@ export function transpose(A) {
  * @param {Number} far Far bound of the frustum
  * @returns {mat4} out
  */
-export function frustum(out, left, right, bottom, top, near, far) {
+function frustum(out, left, right, bottom, top, near, far) {
   let rl = 1 / (right - left);
   let tb = 1 / (top - bottom);
   let nf = 1 / (near - far);
