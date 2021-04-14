@@ -15,18 +15,28 @@
     background:#888;
   "
 ></canvas>
+<script>
+  //canvas i context
+  let canvas=document.querySelector('canvas'); //agafa element <canvas> del DOM
+  let ctx=canvas.getContext('2d'); //agafa objecte "context" del canvas
+
+  //dimensions canvas
+  canvas.width=window.innerWidth; //px
+  canvas.height=800; //px
+</script>
 
 <!--carrega model-->
 <script src="vector.js"></script>          <!--classe Vector-->
 <script src="particula.js"></script>       <!--classe Particula-->
 <script src="tipus_particules.js"></script><!--classes per tipus de partícules-->
-<script src="utils.js" ></script>          <!--funcions generals-->
-<script src="canvas.js"></script>          <!--loop requestAnimationFrame-->
-<script src="escena.js"></script>          <!--paràmetres simulació-->
+<script src="utils.js" ></script>          <!--utilitats-->
+<script src="escena.js"></script>          <!--defineix una escena i els paràmetres de simulació-->
+<script src="render.js"></script>          <!--loop requestAnimationFrame-->
 
 <!--en procés TODO-->
 <script src="camera.js"></script>          <!--càmera-->
 
+<!--html-->
 <div
   style="
     display:flex;
