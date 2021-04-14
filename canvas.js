@@ -3,7 +3,7 @@ let ctx=canvas.getContext('2d'); //agafa objecte "context" del canvas
 
 //set dimensions canvas
 canvas.width=window.innerWidth; //1280; //px
-canvas.height=window.innerHeight; //800; //px
+canvas.height=800; //px
 
 //render loop
 let ticks=0; //frames

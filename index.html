@@ -1,23 +1,43 @@
 <!doctype html><html><head>
   <meta charset="utf8">
-  <style>
-    body{
-      margin:0;
-    }
-    canvas{
-      display:block;
-      background:#888;
-    }
-  </style>
-</head><body>
-<canvas></canvas>
+  <title>Partícules</title>
+</head>
+
+<body
+  style="
+    margin:0;
+  "
+>
+
+<canvas
+  style="
+    display:block;
+    background:#888;
+  "
+></canvas>
 
 <!--carrega model-->
-<script src="vector.js"></script><!--classe Vector-->
-<script src="particula.js"></script><!--classe Particula-->
-<script src="tipus_particules.js"></script><!--extends class Particula-->
-<script src="utils.js" ></script><!--funcions-->
-<script src="canvas.js"></script><!--loop requestAnimationFrame-->
-<script src="app.js"   ></script><!--paràmetres simulació-->
+<script src="vector.js"></script>          <!--classe Vector-->
+<script src="particula.js"></script>       <!--classe Particula-->
+<script src="tipus_particules.js"></script><!--classes per tipus de partícules-->
+<script src="utils.js" ></script>          <!--funcions generals-->
+<script src="canvas.js"></script>          <!--loop requestAnimationFrame-->
+<script src="escena.js"></script>          <!--paràmetres simulació-->
 
-<script src="camera.js"   ></script><!--paràmetres simulació-->
+<!--en procés TODO-->
+<script src="camera.js"></script>          <!--càmera-->
+
+<div
+  style="
+    display:flex;
+    justify-content:space-between;
+  "
+>
+  <b>Partícules</b>
+  <a href="https://github.com/holalluis/particules" target=_blank>codi</a>
+</div>
+
+<div>
+  Paràmetres simulació (en procés)
+  botons per modificar coses
+</div>

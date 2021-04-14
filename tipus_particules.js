@@ -1,6 +1,6 @@
 /*tipus de partícules*/
 
-//electró
+//Electró
 class Electro extends Particula{
   constructor(x,y,z){
     let radi    = 1e-20; //m
@@ -11,7 +11,7 @@ class Electro extends Particula{
   }
 }
 
-//protó
+//Protó
 class Proto extends Particula{
   constructor(x,y,z){
     let radi    = 8.41235641483227e-16; //m
