@@ -1,7 +1,7 @@
 /*PARÀMETRES ESCENA SIMULACIÓ*/
 
 //Quantes partícules hi ha?
-let N = Math.pow(2,2); //N^2
+let N = Math.pow(5,2); //N^2
 
 /*constants matemàtiques*/
 const π = Math.PI;
