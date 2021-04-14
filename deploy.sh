@@ -3,6 +3,7 @@
 #git
 git add *
 git commit -am 'update'
+git push
 
 #desplega carpeta al servidor
 # -h  human readable format
