@@ -173,9 +173,9 @@ class Matrius{
 
 //frustum i càmera
 let camera={
-  ull:{x:-24, y:-11, z:-49 },
+  ull:{x:0, y:0, z:-50 },
   u1:[1,0,0], //orientació x
-  u2:[0,1,0], //orientació y
+  u2:[0,-1,0], //orientació y
   u3:[0,0,1], //orientació z
 };
 let frustum={
@@ -192,17 +192,30 @@ function update_matrius(){
 }
 update_matrius();
 
-document.querySelector('#camera_ull_x' ).value=camera.ull.x;
-document.querySelector('#camera_ull_y' ).value=camera.ull.y;
-document.querySelector('#camera_ull_z' ).value=camera.ull.z;
-document.querySelector('#frustum_angle1').value=frustum.angle1;
-document.querySelector('#frustum_angle2').value=frustum.angle2;
-document.querySelector('#frustum_far'  ).value=frustum.far;
-document.querySelector('#frustum_near' ).value=frustum.near;
+function update_controls_camera(){
+  document.querySelector('#camera_ull_x').value   = camera.ull.x;
+  document.querySelector('#camera_ull_y').value   = camera.ull.y;
+  document.querySelector('#camera_ull_z').value   = camera.ull.z;
+  document.querySelector('#camera_u1_x').value    = camera.u1[0];
+  document.querySelector('#camera_u1_y').value    = camera.u1[1];
+  document.querySelector('#camera_u1_z').value    = camera.u1[2];
+  document.querySelector('#camera_u2_x').value    = camera.u2[0];
+  document.querySelector('#camera_u2_y').value    = camera.u2[1];
+  document.querySelector('#camera_u2_z').value    = camera.u2[2];
+  document.querySelector('#camera_u3_x').value    = camera.u3[0];
+  document.querySelector('#camera_u3_y').value    = camera.u3[1];
+  document.querySelector('#camera_u3_z').value    = camera.u3[2];
+  document.querySelector('#frustum_angle1').value = frustum.angle1;
+  document.querySelector('#frustum_angle2').value = frustum.angle2;
+  document.querySelector('#frustum_far').value    = frustum.far;
+  document.querySelector('#frustum_near').value   = frustum.near;
+}
+update_controls_camera();
 
+//funció final per traduir 3d a 2d
 function calcula_punt_canvas(x,y,z){
   let xy = Matrius.calcula_punt_pantalla(x,y,z, matriu_frustum, matriu_camera);
-  let X = xy[0];
-  let Y = xy[1];
+  let X = xy[0] + canvas.width/2;
+  let Y = xy[1] + canvas.height/2;
   return [X,Y];
 }

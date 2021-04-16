@@ -1,12 +1,12 @@
 /*PARÀMETRES ESCENA SIMULACIÓ*/
 
 //Quantes partícules hi ha?
-let N = Math.pow(3,2); //N^2
+let N = Math.pow(15,2); //N^2
 
 //paràmetres simulació (ajustar per poder veure moviment)
 //es modificaran els valors de totes les partícules
 let modificadors={
-  massa:   5e5, //massa = "resistència al moviment"
+  massa:   1e5, //massa = "resistència al moviment"
   radi:    5e14, //tamany (zoom arbritrari)
   carrega: 1, //càrrega = "força amb la que s'atrau o repelen altres càrregues"
 };

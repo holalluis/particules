@@ -13,97 +13,111 @@ let play=true;
     ctx.strokeStyle="black";
     ctx.fillStyle="black";
 
-    //eix x
-    ctx.beginPath();
-    ctx.moveTo(...calcula_punt_canvas( 10,0,0));
-    ctx.lineTo(...calcula_punt_canvas(-10,0,0));
-    ctx.stroke();
-    ctx.closePath();
-
-    //eix y
-    ctx.beginPath();
-    ctx.moveTo(...calcula_punt_canvas(0, 10,0));
-    ctx.lineTo(...calcula_punt_canvas(0,-10,0));
-    ctx.stroke();
-    ctx.closePath();
-
-    //eix z
-    ctx.beginPath();
-    ctx.moveTo(...calcula_punt_canvas(0,0, 10));
-    ctx.lineTo(...calcula_punt_canvas(0,0,-10));
-    ctx.stroke();
-    ctx.closePath();
-
-    //dibuixa un cub
-    ctx.beginPath();
-    ctx.strokeStyle='red';
-
-    ctx.moveTo(...calcula_punt_canvas(-10,-10,-10));
-    ctx.lineTo(...calcula_punt_canvas(10,-10,-10));
-    ctx.lineTo(...calcula_punt_canvas(10,-10,10));
-    ctx.lineTo(...calcula_punt_canvas(-10,-10,10));
-    ctx.lineTo(...calcula_punt_canvas(-10,-10,-10));
-
-    ctx.moveTo(...calcula_punt_canvas(-10,10,-10));
-    ctx.lineTo(...calcula_punt_canvas(10,10,-10));
-    ctx.lineTo(...calcula_punt_canvas(10,10,10));
-    ctx.lineTo(...calcula_punt_canvas(-10,10,10));
-    ctx.lineTo(...calcula_punt_canvas(-10,10,-10));
-
-    ctx.moveTo(...calcula_punt_canvas(-10,-10,-10));
-    ctx.lineTo(...calcula_punt_canvas(-10,10,-10));
-
-    ctx.moveTo(...calcula_punt_canvas(-10,-10,10));
-    ctx.lineTo(...calcula_punt_canvas(-10,10,10));
-
-    ctx.moveTo(...calcula_punt_canvas(10,-10,-10));
-    ctx.lineTo(...calcula_punt_canvas(10,10,-10));
-
-    ctx.moveTo(...calcula_punt_canvas(10,-10,10));
-    ctx.lineTo(...calcula_punt_canvas(10,10,10));
-
-    ctx.stroke();
-    ctx.closePath();
-
-    for(let i=-10;i<=10;i++){
-      if(i==0) continue;
-      let p0 = calcula_punt_canvas(i, 0.1,0);
-      let p1 = calcula_punt_canvas(i,-0.1,0);
+    {//dibuixa eixos
+      return
+      //eix x
       ctx.beginPath();
-      ctx.strokeStyle='black';
-      ctx.moveTo(...p0);
-      ctx.lineTo(...p1);
+      ctx.moveTo(...calcula_punt_canvas( 10,0,0));
+      ctx.lineTo(...calcula_punt_canvas(-10,0,0));
       ctx.stroke();
-      let text=`(${i},0,0)`;
-      let m = ctx.measureText(text);
-      ctx.fillText(text, p1[0]-m.width/2, p1[1]+6);
+      ctx.closePath();
+
+      //eix y
+      ctx.beginPath();
+      ctx.moveTo(...calcula_punt_canvas(0, 10,0));
+      ctx.lineTo(...calcula_punt_canvas(0,-10,0));
+      ctx.stroke();
+      ctx.closePath();
+
+      //eix z
+      ctx.beginPath();
+      ctx.moveTo(...calcula_punt_canvas(0,0, 10));
+      ctx.lineTo(...calcula_punt_canvas(0,0,-10));
+      ctx.stroke();
       ctx.closePath();
     }
-    for(let i=-10;i<=10;i++){
-      if(i==0) continue;
-      let p0 = calcula_punt_canvas( 0.1,i,0);
-      let p1 = calcula_punt_canvas(-0.1,i,0);
+
+    {//dibuixa un cub
+      return;
       ctx.beginPath();
-      ctx.moveTo(...p0);
-      ctx.lineTo(...p1);
+      ctx.strokeStyle='red';
+
+      ctx.moveTo(...calcula_punt_canvas(-10,-10,-10));
+      ctx.lineTo(...calcula_punt_canvas(10,-10,-10));
+      ctx.lineTo(...calcula_punt_canvas(10,-10,10));
+      ctx.lineTo(...calcula_punt_canvas(-10,-10,10));
+      ctx.lineTo(...calcula_punt_canvas(-10,-10,-10));
+
+      ctx.moveTo(...calcula_punt_canvas(-10,10,-10));
+      ctx.lineTo(...calcula_punt_canvas(10,10,-10));
+      ctx.lineTo(...calcula_punt_canvas(10,10,10));
+      ctx.lineTo(...calcula_punt_canvas(-10,10,10));
+      ctx.lineTo(...calcula_punt_canvas(-10,10,-10));
+
+      ctx.moveTo(...calcula_punt_canvas(-10,-10,-10));
+      ctx.lineTo(...calcula_punt_canvas(-10,10,-10));
+
+      ctx.moveTo(...calcula_punt_canvas(-10,-10,10));
+      ctx.lineTo(...calcula_punt_canvas(-10,10,10));
+
+      ctx.moveTo(...calcula_punt_canvas(10,-10,-10));
+      ctx.lineTo(...calcula_punt_canvas(10,10,-10));
+
+      ctx.moveTo(...calcula_punt_canvas(10,-10,10));
+      ctx.lineTo(...calcula_punt_canvas(10,10,10));
+
       ctx.stroke();
-      let text=`(0,${i},0)`;
-      let m = ctx.measureText(text);
-      ctx.fillText(text, p1[0]-m.width, p1[1]+6);
       ctx.closePath();
     }
-    for(let i=-10;i<=10;i++){
-      if(i==0) continue;
-      let p0 = calcula_punt_canvas( 0.1,0,i);
-      let p1 = calcula_punt_canvas(-0.1,0,i);
-      ctx.beginPath();
-      ctx.moveTo(...p0);
-      ctx.lineTo(...p1);
-      ctx.stroke();
-      let text=`(0,0,${i})`;
-      let m = ctx.measureText(text);
-      ctx.fillText(text, p1[0]-m.width, p1[1]+6);
-      ctx.closePath();
+
+    {//dibuixa separacions als eixos
+      let dibuixa_text = true;
+      for(let i=-10;i<=10;i++){
+        if(i==0) continue;
+        let p0 = calcula_punt_canvas(i, 0.1,0);
+        let p1 = calcula_punt_canvas(i,-0.1,0);
+        ctx.beginPath();
+        ctx.strokeStyle='black';
+        ctx.moveTo(...p0);
+        ctx.lineTo(...p1);
+        ctx.stroke();
+        if(dibuixa_text){
+          let text=`(${i},0,0)`;
+          let m = ctx.measureText(text);
+          ctx.fillText(text, p1[0]-m.width/2, p1[1]-5);
+        }
+        ctx.closePath();
+      }
+      for(let i=-10;i<=10;i++){
+        if(i==0) continue;
+        let p0 = calcula_punt_canvas( 0.1,i,0);
+        let p1 = calcula_punt_canvas(-0.1,i,0);
+        ctx.beginPath();
+        ctx.moveTo(...p0);
+        ctx.lineTo(...p1);
+        ctx.stroke();
+        if(dibuixa_text){
+          let text=`(0,${i},0)`;
+          let m = ctx.measureText(text);
+          ctx.fillText(text, p1[0]-m.width, p1[1]+5);
+        }
+        ctx.closePath();
+      }
+      for(let i=-10;i<=10;i++){
+        if(i==0) continue;
+        let p0 = calcula_punt_canvas(0, 0.1,i);
+        let p1 = calcula_punt_canvas(0,-0.1,i);
+        ctx.beginPath();
+        ctx.moveTo(...p0);
+        ctx.lineTo(...p1);
+        ctx.stroke();
+        if(dibuixa_text){
+          let text=`(0,0,${i})`;
+          let m = ctx.measureText(text);
+          ctx.fillText(text, p1[0]-m.width, p1[1]+6);
+        }
+        ctx.closePath();
+      }
     }
   })();
 
