@@ -287,10 +287,17 @@ class Particula{
     let X = punt_canvas[0];
     let Y = punt_canvas[1];
 
+    //un punt a la superficie de l'esfera
+    let punt_superficie = calcula_punt_canvas(x+R,y,z);
+    let XR = punt_superficie[0];
+    let YR = punt_superficie[1];
+    let llargada_radi = Math.sqrt(Math.pow(XR-X,2) + Math.pow(YR-Y,2));
+
     //centre partícula
+    //TODO com determinar llargada radi al canvas?
     ctx.beginPath()
     ctx.fillStyle=this.color;
-    ctx.arc(X,Y,this.radi,0,2*Math.PI);
+    ctx.arc(X,Y,llargada_radi,0,2*Math.PI);
     ctx.fill();
     ctx.closePath()
 
