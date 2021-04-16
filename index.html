@@ -30,24 +30,25 @@
   <div style=display:flex>
     <table border=1>
       <tr>
-        <td colspan=3 rowspan=3>camera
-        <td>x <input type=number id=camera_ull_x onchange="camera.ull.x=this.value;update_matrius()" value=0 step=1></tr>
-        <td>y <input type=number id=camera_ull_y onchange="camera.ull.y=this.value;update_matrius()" value=0 step=1></tr>
-        <td>z <input type=number id=camera_ull_z onchange="camera.ull.z=this.value;update_matrius()" value=0 step=0.1></tr>
-      </tr>
-    </table>
-    <table border=1>
-      <tr>
         <td rowspan=4 style="text-align:center">frustum
         <td>angle1<td><input type=number id=frustum_angle1 onchange="frustum.angle1=this.value;update_matrius()" value=0 step=0.0001></tr>
         <td>angle2<td><input type=number id=frustum_angle2 onchange="frustum.angle2=this.value;update_matrius()" value=0 step=0.0001></tr>
         <td>near <td><input type=number id=frustum_near  onchange="frustum.near=this.value;update_matrius()"  value=0></tr>
         <td>far  <td><input type=number id=frustum_far   onchange="frustum.far=this.value;update_matrius()"   value=0></tr>
     </table>
+    <table border=1>
+      <tr>
+        <td colspan=3 rowspan=3>ull càmera
+        <td>x <input type=number id=camera_ull_x onchange="camera.ull.x=this.value;update_matrius()" value=0 step=1></tr>
+        <td>y <input type=number id=camera_ull_y onchange="camera.ull.y=this.value;update_matrius()" value=0 step=1></tr>
+        <td>z <input type=number id=camera_ull_z onchange="camera.ull.z=this.value;update_matrius()" value=0 step=0.1></tr>
+      </tr>
+    </table>
   </div>
 
   <!--log-->
   <div>
+    <b>Info simulació</b>
     <table border=1>
       <tr><td>Energia cinètica total <td id=Ec_total>0<td>J
       <tr><td>Velocitat màxima       <td id=v_max   >0<td>m/s
