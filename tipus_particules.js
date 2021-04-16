@@ -21,3 +21,14 @@ class Proto extends Particula{
     this.simbol = "P+";
   }
 }
+
+//Neutró
+class Neutro extends Particula{
+  constructor(x,y,z){
+    let radi    = 8e-16;//m
+    let massa   = 1.00866491588*uma;
+    let carrega = 0; //C
+    super(x,y,z,radi,massa,carrega);
+    this.simbol = "N";
+  }
+}
