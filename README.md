@@ -3,7 +3,8 @@ Simulador de partícules
 Per ara l'estic fusionant amb un altre repositori (https://github.com/holalluis/atoms)
 
 Dubtes:
-  1. Calcular camp elèctric induït
+  1. Calcular camp elèctric induït (llei de Faraday, 3a llei de Maxwell)
+  2. Llei d'Ampère (4rta llei de Maxwell)
   4. Càrregues amb acceleració emeten radiació per tant perden energia... calcular.
   3. Comprovar que les partícules no tinguin velocitat superior a la de la llum
   5. Separar funció per dibuixar partícula fora de la classe Particula

@@ -16,10 +16,8 @@ document.addEventListener('pointerlockchange',function(){
 function update_mouse(e) {
   let x = e.movementX;
   let y = e.movementY;
-
-  camera.u3[0] += 0.0002*x;
-  camera.u3[1] -= 0.0002*y;
-
+  camera.u3[0] += 0.0005*x;
+  camera.u3[1] -= 0.0005*y;
   update_controls_camera();
   update_matrius();
 }
