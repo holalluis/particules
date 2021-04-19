@@ -1,7 +1,7 @@
 /*PARÀMETRES ESCENA SIMULACIÓ*/
 
 //Quantes partícules hi ha?
-let N = Math.pow(15,2); //N^2
+let N = Math.pow(10,2); //N^2
 
 //paràmetres simulació (ajustar per poder veure moviment)
 //es modificaran els valors de totes les partícules

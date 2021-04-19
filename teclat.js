@@ -22,6 +22,7 @@ function teclat(ev){
       camera.ull.z += 0.5*camera.u3[1];
       break;
   }
+  if(['w','s','a','d'].indexOf(ev.key)==-1){return;}
   update_controls_camera();
   update_matrius();
 }
