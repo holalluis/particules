@@ -7,12 +7,12 @@ class Particula{
     this.spin    = 0;          //spin TODO
 
     //magnituds vectorials
-    this.r = new Vector(x||0, y||0, z||0); //posició (m)
-    this.v = new Vector(0,0,0); //velocitat (m/s)
-    this.a = new Vector(0,0,0); //acceleració (m/s^2)
-    this.F = new Vector(0,0,0); //suma de forces rebudes (N)
+    this.r = new Vector(x||0,y||0,z||0); //posició (m)
+    this.v = new Vector(0,0,0);          //velocitat (m/s)
+    this.a = new Vector(0,0,0);          //acceleració (m/s^2)
+    this.F = new Vector(0,0,0);          //suma de forces rebudes (N)
 
-    //propietats descriptives (no físiques)
+    //propietats no físiques
     this.simbol=""; //string
     this.color=(function(q){
       if(q==0){return "rgba(  0,   0, 255, 0.5)"}
@@ -35,11 +35,6 @@ class Particula{
       return this.força_magnetica(P); //Vector
     });
 
-    //forces protó-neutró
-    let forces_nuclears_fortes = particules.map(P=>{
-      return this.força_nuclear_forta(P); //Vector
-    });
-
     //força de la gravetat de la Terra
     let gravetat = this.força_gravetat();
 
@@ -47,7 +42,6 @@ class Particula{
     let forces = [
       ...forces_electriques,
       ...forces_magnetiques,
-      ...forces_nuclears_fortes,
       gravetat,
     ]; //array de vectors
 
@@ -127,51 +121,81 @@ class Particula{
     this.dibuixa();
   }
 
-  //calcula quantitat de moviment "p" (vector)
-  //p = m·v
-  /*
-  get quantitat_de_moviment(){
-    let m = this.massa;
-    return this.v.multiplica(m);
-  }
-  */
-
-  //calcula quin camp elèctric (E) genera la partícula a un punt P
+  //camp elèctric (E) genera la partícula a un punt P
   //E = K·q/r^2*u
   camp_electric(P){ //-> Vector
+    if(this.r==P){
+      return new Vector(0,0,0);
+    }
+
     let q   = this.carrega; //C
     let vec = new Vector(P.x-this.r.x, P.y-this.r.y, P.z-this.r.z); //Vector fins al punt P
     let r   = vec.length; //distància fins al punt P
-    if(r<this.radi) return new Vector(0,0,0);
-    let uni = vec.normalitza(); //Vector
-    let E   = uni.multiplica( K*q/(r*r) ); //Vector
-    return E;
+
+    //si el punt és dins la partícula no hi ha camp
+    if(r<this.radi) {
+      return new Vector(0,0,0);
+    }
+
+    let E = K*q/(r*r); //escalar
+    let uni = vec.normalitza(); //Vector unitari (direcció)
+    return uni.multiplica(E);
   }
 
-  //calcula quina força elèctrica rep de la partícula p
-  //F = q·E
-  força_electrica(p){ //->Vector
-    let E = p.camp_electric(this.r); //camp elèctric que genera la partícula p
-    let F = E.multiplica(this.carrega); //força (Vector)
-    return F;
+  //camp elèctric (E) genera la partícula a un punt P
+  camp_electric_Lennard_Jones(P){
+    if(this.r==P) return new Vector(0,0,0);
+
+    let q   = this.carrega; //C
+    let vec = new Vector(P.x-this.r.x, P.y-this.r.y, P.z-this.r.z); //Vector fins al punt P
+    let r   = vec.length; //distància fins al punt P
+
+    let σ = 2.411e-10;    //angstroms a metres
+    let ε = 4.57*1.6e-19; //mEV a joules
+    let V = q*4*ε*(
+       Math.pow(σ/r,12)
+      -Math.pow(σ/r, 6)
+    );
+
+    let uni = vec.normalitza(); //Vector unitari (direcció)
+    return uni.multiplica(V);
   }
 
-  //calcula quin camp magnètic (B) genera la partícula a un punt P
+  //camp magnètic (B) genera la partícula a un punt P
   //B = (μ0/4π)·q(v x u)/r^2
   camp_magnetic(P){ //->Vector
+    if(this.r==P){
+      return new Vector(0,0,0);
+    }
     let q   = this.carrega; //C
     let vel = this.v; //velocitat partícula actual
     let vec = new Vector(P.x-this.r.x, P.y-this.r.y, P.z-this.r.z); //Vector fins al punt P
     let r   = vec.length; //distància fins al punt P
-    if(r==0) return new Vector(0,0,0);
     let uni = vec.normalitza(); //Vector
     let B   = vel.producte_vectorial(uni).multiplica( μ0/(4*π)*q/(r*r)); //Vector
     return B;
   }
 
-  //calcula quina força magnètica rep de la partícula p
+  //força elèctrica rebuda de la partícula p
+  //F = q·E
+  força_electrica(p){ //->Vector
+    if(this==p) return new Vector(0,0,0);
+
+    let E;
+    if(p.constructor==Electro || this.constructor==Electro){
+      E = p.camp_electric(this.r); //camp elèctric que genera la partícula p
+    }else{
+      E = p.camp_electric_Lennard_Jones(this.r); //camp elèctric que genera la partícula p
+    }
+
+    let F = E.multiplica(this.carrega); //força (Vector)
+    return F;
+  }
+
+  //força magnètica rebuda de la partícula p
   //F = q·(v x B)
   força_magnetica(p){ //->Vector
+    if(this==p) return new Vector(0,0,0);
     let B   = p.camp_magnetic(this.r); //camp magnètic que genera la partícula p
     let vel = this.v; //velocitat (vector)
     let F   = vel.producte_vectorial(B).multiplica(this.carrega); //força (Vector)
@@ -182,40 +206,6 @@ class Particula{
   força_gravetat(){ //->Vector
     //l'eix y a la pantalla va de dalt a baix, per tant g és positiu
     return new Vector(0,this.massa*g,0);
-  }
-
-  //calcula quina força nuclear forta rep de la partícula P
-  //F = ?
-  força_nuclear_forta(par){ //->Vector
-    //TODO
-    return new Vector(0,0,0);
-
-    if(par==this) return new Vector(0,0,0);
-
-    if(
-      this.constructor!=Proto &&
-      this.constructor!=Neutro
-    ){
-      return new Vector(0,0,0);
-    }
-
-    if(
-      par.constructor!=Proto &&
-      par.constructor!=Neutro
-    ){
-      return new Vector(0,0,0);
-    }
-
-    let vec = new Vector(par.r.x-this.r.x, par.r.y-this.r.y, par.r.z-this.r.z); //vector cap a la partícula
-    let r   = vec.length; //distància fins al punt P
-
-    if(r>1e-15) return new Vector(0,0,0);
-
-    //console.log(vec.x, vec.y, vec.z);
-    let uni = vec.normalitza(); //Vector
-    let F   = uni.multiplica(1); //Vector
-    //console.log(`${this.simbol} rep força nuclear de ${par.simbol}: (${F.x},${F.y},${F.z})`);
-    return F;
   }
 
   //energia cinètica
@@ -330,7 +320,7 @@ class Particula{
     /*
     let vel = this.v;
     ctx.beginPath();
-    ctx.strokeStyle="orange";
+    ctx.strokeStyle="green";
     ctx.moveTo(X,Y);
     ctx.lineTo(...calcula_punt_canvas(x+vel.x, y+vel.y, z+vel.z));
     ctx.stroke();
@@ -349,5 +339,5 @@ class Particula{
   }
 }
 
-//array totes les partícules
+//array global totes les partícules
 let particules=[];

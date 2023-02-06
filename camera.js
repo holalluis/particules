@@ -19,7 +19,7 @@ class Matrius{
     let b10 = a21 * a33 - a23 * a31;
     let b11 = a22 * a33 - a23 * a32;
 
-    //determinant
+    //determinant de A
     let det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
     if(!det){return null;}
     det = 1.0 / det;
@@ -117,10 +117,7 @@ class Matrius{
     let a20 = A[8],  a21 = A[9],  a22 = A[10], a23 = A[11];
     let a30 = A[12], a31 = A[13], a32 = A[14], a33 = A[15];
 
-    let v0 = vec[0],
-        v1 = vec[1],
-        v2 = vec[2],
-        v3 = vec[3];
+    let v0 = vec[0], v1 = vec[1], v2 = vec[2], v3 = vec[3];
 
     let out = new Array(4);
     out[0] = a00*v0 + a01*v1 + a02*v2 + a03*v3;

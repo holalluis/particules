@@ -18,15 +18,6 @@
 </head>
 <body onkeypress="teclat(event)">
 <canvas></canvas>
-<script>
-  //canvas i context
-  let canvas=document.querySelector('canvas');
-  let ctx=canvas.getContext('2d');
-
-  //dimensions canvas
-  canvas.width=window.innerWidth-100; //px
-  canvas.height=600; //px
-</script>
 
 <!--controls-->
 <main>
@@ -65,18 +56,11 @@
       </tr>
       <tr>
         <th rowspan=4 style="text-align:center">frustum
-      <th>angle<sub>1</sub><td><input type=number id=frustum_angle1 onchange="actualitza_valors(frustum,'angle1',event)" value=0 step=0.0001></tr>
-      <th>angle<sub>2</sub><td><input type=number id=frustum_angle2 onchange="actualitza_valors(frustum,'angle2',event)" value=0 step=0.0001></tr>
-      <th>near             <td><input type=number id=frustum_near   onchange="actualitza_valors(frustum,'near',event"    value=0></tr>
-      <th>far              <td><input type=number id=frustum_far    onchange="actualitza_valors(frustum,'far',event)"    value=0></tr>
+        <th>angle<sub>1</sub><td><input type=number id=frustum_angle1 onchange="actualitza_valors(frustum,'angle1',event)" value=0 step=0.0001></tr>
+        <th>angle<sub>2</sub><td><input type=number id=frustum_angle2 onchange="actualitza_valors(frustum,'angle2',event)" value=0 step=0.0001></tr>
+        <th>near             <td><input type=number id=frustum_near   onchange="actualitza_valors(frustum,'near',event"    value=0></tr>
+        <th>far              <td><input type=number id=frustum_far    onchange="actualitza_valors(frustum,'far',event)"    value=0></tr>
     </table>
-    <script>
-      function actualitza_valors(obj,camp,event){
-        let input = event.target;
-        obj[camp]=parseFloat(input.value)||0;
-        update_matrius();
-      }
-    </script>
   </div>
 
   <!--log-->
@@ -85,24 +69,43 @@
     <table border=1>
       <tr><th>Energia cinètica total <td id=Ec_total>0<td>J
       <tr><th>Velocitat màxima       <td id=v_max   >0<td>m/s
+      <tr><th>Frames                 <td id=frames  >0<td>frames
     </table>
-    <script>
-      let dom={
-        Ec_total: document.querySelector('#Ec_total'),
-        v_max:    document.querySelector('#v_max'),
-      };
-    </script>
   </div>
 </main>
 
-<!--carrega model-->
-<script src="vector.js"></script>          <!--classe Vector-->
-<script src="particula.js"></script>       <!--classe Particula-->
+<script>
+  //canvas i context
+  let canvas=document.querySelector('canvas');
+  let ctx=canvas.getContext('2d');
+
+  //dimensions canvas
+  canvas.width=window.innerWidth-100; //px
+  canvas.height=600; //px
+
+  //linka valors del DOM
+  function actualitza_valors(obj,camp,event){
+    let input=event.target;
+    obj[camp]=parseFloat(input.value)||0;
+    update_matrius();
+  }
+
+  //elements DOM
+  let dom={
+    Ec_total: document.querySelector('#Ec_total'),
+    v_max:    document.querySelector('#v_max'),
+    frames:   document.querySelector('#frames'),
+  };
+</script>
+
+<!--carrega moduls-->
+<script src="vector.js"          ></script><!--classe Vector-->
+<script src="particula.js"       ></script><!--classe Particula-->
 <script src="tipus_particules.js"></script><!--classes per tipus de partícules-->
-<script src="constants.js"></script>       <!--constants universals-->
-<script src="utils.js" ></script>          <!--utilitats-->
-<script src="escena.js"></script>          <!--defineix una escena i els paràmetres de simulació-->
-<script src="camera.js"></script>          <!--càmera-->
-<script src="render.js"></script>          <!--loop requestAnimationFrame-->
-<script src="teclat.js"></script>          <!--teclat-->
-<script src="mouse.js"></script>           <!--mouse-->
+<script src="constants.js"       ></script><!--constants universals-->
+<script src="utils.js"           ></script><!--utilitats-->
+<script src="escena.js"          ></script><!--defineix una escena i els paràmetres de simulació-->
+<script src="camera.js"          ></script><!--càmera-->
+<script src="render.js"          ></script><!--loop requestAnimationFrame-->
+<script src="teclat.js"          ></script><!--teclat-->
+<script src="mouse.js"           ></script><!--mouse-->

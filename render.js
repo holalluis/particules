@@ -1,9 +1,10 @@
 //render loop
-let ticks=0; //frames renderitzats
-let play=true;
-(function anima(){
+let ticks=0; //comptador frames
+let play=true; //simulation on/off
 
-  requestAnimationFrame(anima); //loop renderització
+//loop renderització frames
+(function anima(){
+  requestAnimationFrame(anima);
 
   //clear canvas
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -14,7 +15,7 @@ let play=true;
     ctx.fillStyle="black";
 
     {//dibuixa eixos
-      return
+      //return;
       //eix x
       ctx.beginPath();
       ctx.moveTo(...calcula_punt_canvas( 10,0,0));
@@ -38,7 +39,7 @@ let play=true;
     }
 
     {//dibuixa un cub
-      return;
+      //return;
       ctx.beginPath();
       ctx.strokeStyle='red';
 
@@ -70,7 +71,7 @@ let play=true;
       ctx.closePath();
     }
 
-    {//dibuixa separacions als eixos
+    {//dibuixa ticks numèrics als eixos
       let dibuixa_text = true;
       for(let i=-10;i<=10;i++){
         if(i==0) continue;
@@ -126,13 +127,17 @@ let play=true;
     p.update();
   });
 
-  //mostra logs
+  //mostra logs cada 100 frames
   if(ticks%100==0){
     //suma energia cinètica totes les partícules
     dom.Ec_total.innerHTML = particules.map(p=>p.energia_cinetica).sum().toExponential(2);
     //busca la partícula amb la velocitat més alta
     dom.v_max.innerHTML = Math.max(...particules.map(p=>p.v.length)).toExponential(2);
+    //comptador frames
+    dom.frames.innerHTML = ticks;
   }
 
   ticks++; //seguent frame
 })();
+
+

@@ -1,14 +1,20 @@
-/*PARÀMETRES ESCENA SIMULACIÓ*/
+/*
+  ESCENA = "estat inicial simulació"
+*/
 
-//Quantes partícules hi ha?
-let N = Math.pow(10,2); //N^2
+/*
+  Quantes partícules vols crear
+*/
+let N = Math.pow(5,2); //N^2
 
-//paràmetres simulació (ajustar per poder veure moviment)
-//es modificaran els valors de totes les partícules
-let modificadors={
-  massa:   1e5, //massa = "resistència al moviment"
-  radi:    5e14, //tamany (zoom arbritrari)
-  carrega: 1, //càrrega = "força amb la que s'atrau o repelen altres càrregues"
+/*
+  Paràmetres simulació =
+  modificar totes les partícules
+*/
+let parametres_simulacio={
+  massa:   1,  //massa   = "resistència al moviment"
+  radi:    5e14, //tamany  = "zoom arbritrari"
+  carrega: 1,    //càrrega = "força amb la que s'atrau o repelen altres càrregues"
 };
 
 //ordena partícules en una quadrícula
@@ -26,24 +32,24 @@ for(let i=0;i<N;i++){
   let y = separacio_y/2 + Math.floor(i/files_columnes)*separacio_y -10/2;
   let z = -1+2*Math.random();
 
-  let par = null;
-  if(i%2){
+  let p=null; //nova partícula
+  if(false && i%2){
     //crea un electró
-    par = new Electro(x,y,z);
+    p = new Electro(x,y,z);
   }else{
     //crea un protó o un neutró
-    if(Math.random()){
-      par = new Proto(x,y,z);
+    if(Math.random() /*>0.5*/){
+      p = new Proto(x,y,z);
     }else{
-      par = new Neutro(x,y,z);
+      p = new Neutro(x,y,z);
     }
   }
-  particules.push(par);
+  particules.push(p);
 }
 
 //ajusta paràmetres simulació
 particules.forEach(p=>{
-  p.massa   *= modificadors.massa;
-  p.radi    *= modificadors.radi;
-  p.carrega *= modificadors.carrega;
+  p.massa   *= parametres_simulacio.massa;
+  p.radi    *= parametres_simulacio.radi;
+  p.carrega *= parametres_simulacio.carrega;
 });

@@ -1,7 +1,7 @@
 /*
-  classe Vector en R3 (3 dimensions)
+  classe
+  Vector en R3 (3 dimensions)
 */
-
 class Vector{
   constructor(x,y,z){
     this.x=x||0;
@@ -14,7 +14,7 @@ class Vector{
     let x=this.x;
     let y=this.y;
     let z=this.z;
-    return Math.sqrt(x*x + y*y + z*z);
+    return Math.sqrt(x*x+y*y+z*z);
   }
 
   //genera un vector de llargada 1 (vector unitari, norma, normalitzat)
@@ -26,7 +26,7 @@ class Vector{
     return new Vector(x,y,z);
   }
 
-  //retorna un número a partir de 2 vectors
+  //retorna un escalar a partir de 2 vectors
   //si és 0, els vectors són perpendiculars
   producte_escalar(vector){ //->number
     let x = this.x*vector.x;
@@ -35,7 +35,7 @@ class Vector{
     return x+y+z;
   }
 
-  //allarga o escurça un vector
+  //allarga o escurça un vector (si escalar>1 o bé <1)
   multiplica(escalar){ //->vector
     let x = this.x*escalar;
     let y = this.y*escalar;
